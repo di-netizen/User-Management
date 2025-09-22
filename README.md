@@ -1,6 +1,6 @@
 # README
 
-> Project: User Management (Technical Test)
+> Project: User Management 
 
 This document provides clear and professional instructions for running the project locally, along with API documentation using Swagger / OpenAPI.
 
