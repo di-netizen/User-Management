@@ -1,0 +1,4 @@
+/* empty or small tweaks */
+/* small styles for layout */
+main { max-width: 1100px; margin: 0 auto; }
+nav a { margin-right: 0.5rem; font-weight: 600; color: #333; }

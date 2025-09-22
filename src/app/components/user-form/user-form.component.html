@@ -1,0 +1,27 @@
+<h4>{{ isNew ? 'Create User' : 'Edit User' }}</h4>
+
+<form (ngSubmit)="save()" #f="ngForm" class="row g-3 mt-2">
+  <div class="col-12">
+    <input name="name" [(ngModel)]="user.name" class="form-control" placeholder="Name" required>
+  </div>
+
+  <div class="col-12">
+    <input name="email" [(ngModel)]="user.email" class="form-control" placeholder="Email" required type="email">
+  </div>
+
+  <div class="col-12">
+    <input name="password" [(ngModel)]="user.password" class="form-control" placeholder="Password"
+           [required]="isNew" type="password">
+    <small *ngIf="!isNew" class="text-muted">Leave blank to keep current password</small>
+  </div>
+
+  <div class="col-12">
+    <label class="form-label">Date/Time</label>
+    <input name="dateTime" [(ngModel)]="user.dateTime" class="form-control" type="datetime-local" required>
+  </div>
+
+  <div class="col-12 d-flex">
+    <button class="btn btn-success me-2" type="submit">Save</button>
+    <a class="btn btn-secondary" routerLink="/users">Cancel</a>
+  </div>
+</form>
