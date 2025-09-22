@@ -1,18 +1,18 @@
+# README
 
-
-**Project: User Management**
+> Project: User Management (Technical Test)
 
 This document provides clear and professional instructions for running the project locally, along with API documentation using Swagger / OpenAPI.
 
 ---
 
-**Project Overview:**
+## Project Overview
 
 A User Management web application with a C# RESTful backend and an Angular frontend. The backend provides CRUD functionality for managing users and exposes secured API endpoints. Swagger is used for documenting and exploring the API.
 
-Features:
+### Features
 
-* CRUD operations for **User**(Id, Name, Email, Password (hashed), DateTime)
+* CRUD operations for **User** (Id, Name, Email, Password (hashed), DateTime)
 * JWT-based authentication for secured endpoints
 * Swagger / OpenAPI documentation for all routes
 
@@ -64,11 +64,112 @@ Features:
 
 ---
 
-## API Documentation (Swagger)
+## API Documentation with Swagger
 
-* Swagger UI is available when the backend is running in **Development** mode.
-* Navigate to `http://localhost:5110/swagger` (or `/swagger/index.html`) to explore and test the API.
-* An OpenAPI specification (`openapi.yaml`) is provided to describe the API contract.
+### Objective
+
+The API is documented using **Swagger** to provide an interactive UI and a machine-readable OpenAPI specification. This makes it easy to test endpoints and integrate with external tools.
+
+### Why Swagger?
+
+* **Interactive UI**: Test endpoints directly from the browser.
+* **Standard format**: Generates `swagger.json` (OpenAPI spec) for import into Postman and other tools.
+* **Auto-updating**: Automatically reflects changes in controllers and models.
+
+### Step 1: Install Swagger
+
+Install the Swagger NuGet package:
+
+```bash
+dotnet add package Swashbuckle.AspNetCore
+```
+
+### Step 2: Configure Swagger in Program.cs
+
+Add the following code in `Program.cs`:
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "User Management API v1");
+        c.RoutePrefix = string.Empty;
+    });
+}
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
+app.Run();
+```
+
+### Step 3: Run and Verify
+
+1. Start the backend:
+
+   ```bash
+   dotnet run
+   ```
+2. Open browser and go to:
+
+   * **Swagger UI**: `http://localhost:5110/swagger`
+   * **OpenAPI JSON**: `http://localhost:5110/swagger/v1/swagger.json`
+
+### Step 4: Add JWT Support (Optional)
+
+If JWT authentication is enabled, add security config:
+
+```csharp
+using Microsoft.OpenApi.Models;
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "User Management API", Version = "v1" });
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Enter JWT token with 'Bearer ' prefix",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+```
+
+Now, Swagger UI will show an **Authorize** button to input JWT tokens.
+
+### Deliverables
+
+* Swagger UI: `http://localhost:5110/swagger`
+* OpenAPI spec: `swagger/v1/swagger.json`
+* Optional `openapi.yaml` file included in the repository
 
 ---
 
