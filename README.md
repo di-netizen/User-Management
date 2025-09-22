@@ -45,7 +45,7 @@ A User Management web application with a C# RESTful backend and an Angular front
    ```bash
    dotnet run --project ./YourBackendProject.csproj
    ```
-5. By default, the API will run at **[http://localhost:5110](http://localhost:5110)** (depending on configuration).
+5. By default, the API will run at http://localhost:5238/swagger/index.html (depending on configuration).
 
 ### Frontend Setup
 
